@@ -34,7 +34,7 @@ public class Selenium2ImportWp {
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws AWTException, InterruptedException, IOException {
 
-		System.out.println("Start Selenium");
+		System.out.println(" =============> Start Selenium <=============");
 
 		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
 
@@ -65,7 +65,7 @@ public class Selenium2ImportWp {
 		int colImgName = 7;
 
 		// for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-		for (int rowIndex = sheet.getLastRowNum(); rowIndex >= 1325; rowIndex--) {
+		for (int rowIndex = 1308; rowIndex >= 1295; rowIndex--) {
 			Row row = sheet.getRow(rowIndex);
 			if (row != null) {
 				Cell cellFilmName = row.getCell(colTitle);
@@ -83,9 +83,12 @@ public class Selenium2ImportWp {
 					System.out.println(nameFilm);
 
 					//// Post
-					WebElement liPost = rowIndex == sheet.getLastRowNum() ? driver.findElement(By.className("wp-menu-name")) : driver.findElement(By.className("wp-menu-name"));
+					WebElement liPost = driver.findElement(By.linkText("Bài viết"));
 					liPost.click();
-					Thread.sleep(2000);
+					Thread.sleep(1000);
+					WebElement liPostAll = driver.findElement(By.linkText("Tất cả bài viết"));
+					liPostAll.click();
+					Thread.sleep(1000);
 
 					WebElement inputSearchPost = driver.findElement(By.id("post-search-input"));
 					inputSearchPost.sendKeys(nameFilm);
@@ -96,11 +99,12 @@ public class Selenium2ImportWp {
 					aRowTitle.click();
 					Thread.sleep(1000);
 
-					WebElement aRemoveThumb = driver.findElement(By.id("remove-post-thumbnail"));
-					if (aRemoveThumb != null) {
+					if(driver.findElements(By.id("remove-post-thumbnail")).size() != 0) {
+						WebElement aRemoveThumb = driver.findElement(By.id("remove-post-thumbnail"));
+
 						aRemoveThumb.click();
 					}
-
+					
 					WebElement aSetThumb = driver.findElement(By.id("set-post-thumbnail"));
 					aSetThumb.click();
 
@@ -133,7 +137,7 @@ public class Selenium2ImportWp {
 
 					WebElement btnSelect = driver.findElement(By.className("media-button-select"));
 					btnSelect.click();
-					Thread.sleep(1000);
+					Thread.sleep(3000);
 
 					WebElement inputPublish = driver.findElement(By.id("publish"));
 					inputPublish.sendKeys(Keys.ENTER);
@@ -144,6 +148,8 @@ public class Selenium2ImportWp {
 		}
 
 		driver.quit();
+		
+		System.out.println(" =============> End Selenium <=============");
 
 		/*
 		 * for (String str : arr) {

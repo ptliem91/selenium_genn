@@ -24,11 +24,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Selenium2Example {
+public class Selenium2DownloadSubscene {
 
 	private static final String FILE_NAME = "files/listFilm.xlsx";
 
-	private static final String SUFFIX_SEARCH = " poster film";
+	private static final String SUFFIX_SEARCH = "";
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws AWTException, InterruptedException, IOException {
@@ -39,20 +39,19 @@ public class Selenium2Example {
 
 		WebDriver driver = new ChromeDriver();
 
-		//// Advance image search with size large 640x480
-
-		driver.get(
-				"https://www.google.com.vn/search?q=image&rlz=1C1CHZL_viVN749VN749&tbs=isz:lt,islt:vga&tbm=isch&source=lnt&sa=X&ved=0ahUKEwjijOvphfzVAhVMOI8KHeJrCH0QpwUIGQ&biw=1273&bih=659&dpr=1");
-
+		driver.get("https://subscene.com/");
+		
 		FileInputStream excelFile = new FileInputStream(new File(FILE_NAME));
 		Workbook workbook = new XSSFWorkbook(excelFile);
 		Sheet sheet = workbook.getSheetAt(0);
 
 		int colTitle = 6;
 		int colImgName = 7;
+		
+		String originalHandle = driver.getWindowHandle();
 
 //		for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-		for (int rowIndex = 1294; rowIndex >= 1245; rowIndex--) {
+		for (int rowIndex = sheet.getLastRowNum(); rowIndex >= 1300; rowIndex--) {
 			Row row = sheet.getRow(rowIndex);
 			if (row != null) {
 				Cell cell = row.getCell(colTitle);
@@ -68,59 +67,45 @@ public class Selenium2Example {
 
 					//// Call selenium
 					System.out.println(nameFilm);
+					
+					
+					driver.navigate().to("https://subscene.com/");
 
 					WebElement searchBox = driver.findElement(By.name("q"));
 					searchBox.clear();
 					searchBox.sendKeys(nameFilm + SUFFIX_SEARCH);
 					searchBox.sendKeys(Keys.RETURN);
 
-					// Point coordinates = searchBox.getLocation();
+					//// Point coordinates = searchBox.getLocation();
 					Robot robot = new Robot();
-					robot.mouseMove(75, 400);
+					robot.mouseMove(100, 420);
 					robot.mousePress(InputEvent.BUTTON1_MASK);
-					Thread.sleep(800);
+					robot.mouseRelease(InputEvent.BUTTON1_MASK);
+					Thread.sleep(2000);
+					
+					robot.mouseMove(100, 420);
+					robot.mousePress(InputEvent.BUTTON1_MASK);
+					robot.mouseRelease(InputEvent.BUTTON1_MASK);
+					Thread.sleep(1000);
 
 					robot.mousePress(InputEvent.BUTTON1_MASK);
 					robot.mouseRelease(InputEvent.BUTTON1_MASK);
 					Thread.sleep(800);
-
-					robot.mousePress(InputEvent.BUTTON1_MASK);
-					robot.mouseRelease(InputEvent.BUTTON1_MASK);
-					Thread.sleep(800);
-
-					robot.mousePress(InputEvent.BUTTON1_MASK);
-					robot.mouseRelease(InputEvent.BUTTON1_MASK);
-					Thread.sleep(800);
-
-					robot.mousePress(InputEvent.BUTTON1_MASK);
-					robot.mouseRelease(InputEvent.BUTTON1_MASK);
+										
+					robot.mouseMove(350, 420);
 					Thread.sleep(500);
-
-					robot.mouseMove(200, 500);
-					Thread.sleep(500);
-
+					
 					robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
 					robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
 					Thread.sleep(500);
-
-					// 8 lan - Select Save as...
+					
 					robot.keyPress(KeyEvent.VK_DOWN);
 					Thread.sleep(100);
 					robot.keyPress(KeyEvent.VK_DOWN);
 					Thread.sleep(100);
-					robot.keyPress(KeyEvent.VK_DOWN);
-					Thread.sleep(100);
-					robot.keyPress(KeyEvent.VK_DOWN);
-					Thread.sleep(100);
-					robot.keyPress(KeyEvent.VK_DOWN);
-					Thread.sleep(100);
-					robot.keyPress(KeyEvent.VK_DOWN);
-					Thread.sleep(100);
-					robot.keyPress(KeyEvent.VK_DOWN);
-					Thread.sleep(100);
-					robot.keyRelease(KeyEvent.VK_DOWN);
-
+					
 					robot.keyPress(KeyEvent.VK_ENTER);
+					robot.keyRelease(KeyEvent.VK_ENTER);
 					Thread.sleep(200);
 
 					StringSelection selection = new StringSelection(nameImg);
@@ -133,71 +118,32 @@ public class Selenium2Example {
 					robot.keyRelease(KeyEvent.VK_CONTROL);
 					robot.keyRelease(KeyEvent.VK_V);
 
-					Thread.sleep(800);
+					Thread.sleep(500);
 					robot.keyPress(KeyEvent.VK_ENTER);
 					robot.keyRelease(KeyEvent.VK_ENTER);
+					Thread.sleep(500);
 					
-					Thread.sleep(2000);
+					for(String handle : driver.getWindowHandles()) {
+				        if (!handle.equals(originalHandle)) {
+				            driver.switchTo().window(handle);
+				            driver.close();
+				        }
+				    }
+
+				    driver.switchTo().window(originalHandle);
+					
+//					robot.keyPress(KeyEvent.VK_BACK_SPACE);
+//					robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+					
+					Thread.sleep(3000);
 				}
 			}
 		}
 
-		driver.quit();
+//		driver.quit();
+		
+		System.out.println(" =============> End Dowload Image (Selenium 2) <=============");
 
-		/*
-		 * for (String str : arr) {
-		 * 
-		 * WebElement searchBox = driver.findElement(By.name("q")); searchBox.clear();
-		 * searchBox.sendKeys(str + SUFFIX_SEARCH); searchBox.sendKeys(Keys.RETURN);
-		 * 
-		 * // Point coordinates = searchBox.getLocation(); Robot robot = new Robot();
-		 * robot.mouseMove(75, 400); robot.mousePress(InputEvent.BUTTON1_MASK);
-		 * Thread.sleep(1000);
-		 * 
-		 * robot.mousePress(InputEvent.BUTTON1_MASK);
-		 * robot.mouseRelease(InputEvent.BUTTON1_MASK); Thread.sleep(1000);
-		 * 
-		 * robot.mousePress(InputEvent.BUTTON1_MASK);
-		 * robot.mouseRelease(InputEvent.BUTTON1_MASK); Thread.sleep(1000);
-		 * 
-		 * robot.mousePress(InputEvent.BUTTON1_MASK);
-		 * robot.mouseRelease(InputEvent.BUTTON1_MASK); Thread.sleep(1000);
-		 * 
-		 * robot.mousePress(InputEvent.BUTTON1_MASK);
-		 * robot.mouseRelease(InputEvent.BUTTON1_MASK); Thread.sleep(500);
-		 * 
-		 * robot.mouseMove(200, 500); Thread.sleep(1000);
-		 * 
-		 * robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
-		 * robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK); Thread.sleep(1000);
-		 * 
-		 * // 8 lan - Select Save as... robot.keyPress(KeyEvent.VK_DOWN);
-		 * Thread.sleep(200); robot.keyPress(KeyEvent.VK_DOWN); Thread.sleep(200);
-		 * robot.keyPress(KeyEvent.VK_DOWN); Thread.sleep(200);
-		 * robot.keyPress(KeyEvent.VK_DOWN); Thread.sleep(200);
-		 * robot.keyPress(KeyEvent.VK_DOWN); Thread.sleep(200);
-		 * robot.keyPress(KeyEvent.VK_DOWN); Thread.sleep(200);
-		 * robot.keyPress(KeyEvent.VK_DOWN); Thread.sleep(200);
-		 * robot.keyRelease(KeyEvent.VK_DOWN);
-		 * 
-		 * robot.keyPress(KeyEvent.VK_ENTER); Thread.sleep(200);
-		 * 
-		 * StringSelection selection = new StringSelection(str.replace(" ", "_"));
-		 * Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		 * clipboard.setContents(selection, selection);
-		 * 
-		 * robot.keyPress(KeyEvent.VK_CONTROL); robot.keyPress(KeyEvent.VK_V);
-		 * Thread.sleep(300); robot.keyRelease(KeyEvent.VK_CONTROL);
-		 * robot.keyRelease(KeyEvent.VK_V);
-		 * 
-		 * Thread.sleep(1000); robot.keyPress(KeyEvent.VK_ENTER);
-		 * robot.keyRelease(KeyEvent.VK_ENTER);
-		 * 
-		 * // driver.close(); }
-		 * 
-		 * 
-		 * driver.quit();
-		 */
 	}
 
 }
