@@ -50,22 +50,21 @@ public class Selenium2DownloadFromImdb {
 		
 		int count = 0;
 //		for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-		for (int rowIndex = 1248; rowIndex >= 1200; rowIndex--) {
+		for (int rowIndex = 1084; rowIndex >= 1070; rowIndex--) {
 			Row row = sheet.getRow(rowIndex);
 			if (row != null) {
 				Cell cell = row.getCell(colTitle);
 				Cell cellImgName = row.getCell(colImgName);
 
 				if (cell != null) {
-					// Found column and there is value in the cell.
+					
 					String nameFilm = cell.getStringCellValue() == null ? "fox baby" : cell.getStringCellValue();
 
 					SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 					String nameImg = cellImgName.getStringCellValue() == null ? myFormat.format(new Date())
 							: cellImgName.getStringCellValue();
 
-					//// Call selenium
-					System.out.println(nameFilm);
+					System.out.println(rowIndex + "--> " + nameFilm);
 					
 					driver.navigate().to("http://www.imdb.com/?ref_=nv_home");
 
@@ -105,7 +104,7 @@ public class Selenium2DownloadFromImdb {
 					robot.keyPress(KeyEvent.VK_ENTER);
 					robot.keyRelease(KeyEvent.VK_ENTER);
 					Thread.sleep(300);
-//
+
 					StringSelection selection = new StringSelection(nameImg);
 					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					clipboard.setContents(selection, selection);
@@ -126,6 +125,12 @@ public class Selenium2DownloadFromImdb {
 					Thread.sleep(3000);
 					
 					count++;
+					
+					File f = new File("C:\\Users\\liempt\\Downloads\\" + nameImg + ".jpg");
+					if(!f.exists()) { 
+					    System.err.println(rowIndex + "---> " + nameFilm);
+					}
+					
 				}
 			}
 		}
