@@ -50,7 +50,7 @@ public class Selenium2DownloadFromImdb {
 		
 		int count = 0;
 //		for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-		for (int rowIndex = 1084; rowIndex >= 1070; rowIndex--) {
+		for (int rowIndex = 1050; rowIndex >= 100; rowIndex--) {
 			Row row = sheet.getRow(rowIndex);
 			if (row != null) {
 				Cell cell = row.getCell(colTitle);
